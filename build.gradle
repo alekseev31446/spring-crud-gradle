@@ -1,13 +1,14 @@
 plugins {
 	id 'org.springframework.boot' version '2.7.8'
 	id 'java'
+	id 'nu.studer.jooq' version '5.0'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '8'
+	sourceCompatibility = '11'
 }
 
 repositories {
@@ -18,11 +19,69 @@ dependencies {
 	implementation platform('org.springframework.boot:spring-boot-dependencies:2.7.8')
 
 	implementation 'org.springframework.boot:spring-boot-starter'
+	
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	
+    implementation 'org.jooq:jooq'
+    implementation 'org.jooq:jooq-meta'
+    implementation('org.jooq:jooq-codegen-maven:3.14.16')
+    implementation 'org.postgresql:postgresql'
+    jooqGenerator 'org.postgresql:postgresql:42.5.1'
+    implementation 'org.projectlombok:lombok:1.18.30'
+	annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.slf4j:slf4j-api'
+	
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+
+import org.jooq.meta.jaxb.Logging
+
+jooq {
+    version = '3.14.16'  
+    edition = nu.studer.gradle.jooq.JooqEdition.OSS 
+
+    configurations {
+        main {  
+            generateSchemaSourceOnCompilation = true  
+
+            generationTool {
+                logging = Logging.WARN
+                jdbc {
+                    driver = 'org.postgresql.Driver'
+                    url = 'jdbc:postgresql://localhost:5433/university'
+                    user = 'admin'
+                    password = 'admin'
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+                        inputSchema = 'public'
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                    }
+                   target {
+                        packageName = 'com.example.generated' 
+                        directory = 'src/main/java/com/example/spring/gradle/db'
+                    }
+                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                }
+            }
+        }
+    }
+}
+
+compileJava.dependsOn generateJooq
+
 
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
