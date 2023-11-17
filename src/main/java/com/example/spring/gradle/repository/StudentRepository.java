@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.example.spring.gradle.confing.JooqConfig;
 import com.example.spring.gradle.dto.StudentDto;
 
-
 import static com.example.generated.tables.Students.STUDENTS;
-
-
 
 import lombok.RequiredArgsConstructor;
 

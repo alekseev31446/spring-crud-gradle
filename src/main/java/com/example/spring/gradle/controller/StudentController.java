@@ -1,8 +1,5 @@
 package com.example.spring.gradle.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +17,8 @@ import com.example.spring.gradle.service.StudentService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+
+import com.example.spring.gradle.transformer.StudentDtoTransformer;
 
 @RequiredArgsConstructor
 @RestController
@@ -45,12 +44,7 @@ public class StudentController {
 
     @PutMapping("/update/{id}")
     public StudentDto update(@PathVariable Integer id, @RequestBody StudentDto student) {
-    	return StudentDto.builder()
-                .id(id)
-                .firstname(student.getFirstname())
-                .middlename(student.getMiddlename())
-                .lastname(student.getLastname())
-                .build();
+    	return studentService.update(StudentDtoTransformer.toStudentDto(id, student));
     }
 
     @DeleteMapping("/delete/{id}")
