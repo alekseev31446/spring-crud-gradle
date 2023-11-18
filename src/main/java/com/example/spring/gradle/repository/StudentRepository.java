@@ -44,8 +44,7 @@ public class StudentRepository {
         .set(STUDENTS.MIDDLENAME, studentDto.getMiddlename())
         .set(STUDENTS.LASTNAME, studentDto.getLastname())
         .returning()
-        .fetchOne()
-        .into(StudentDto.class);
+        .fetchOneInto(StudentDto.class); 
     }
 
     public StudentDto update(StudentDto studentDto) {
@@ -56,8 +55,7 @@ public class StudentRepository {
                 .set(STUDENTS.LASTNAME, studentDto.getLastname())
                 .where(STUDENTS.ID.eq(studentDto.getId()))
                 .returning()
-                .fetchOne()
-                .into(StudentDto.class);
+                .fetchOneInto(StudentDto.class); 
     }
 
     public void delete(Integer id) {

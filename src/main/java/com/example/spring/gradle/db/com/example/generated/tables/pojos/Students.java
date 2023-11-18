@@ -16,9 +16,9 @@ public class Students implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Integer id;
-    private final String  firstname;
-    private final String  middlename;
-    private final String  lastname;
+    private final String firstname;
+    private final String middlename;
+    private final String lastname;
 
     public Students(Students value) {
         this.id = value.id;
@@ -29,9 +29,9 @@ public class Students implements Serializable {
 
     public Students(
         Integer id,
-        String  firstname,
-        String  middlename,
-        String  lastname
+        String firstname,
+        String middlename,
+        String lastname
     ) {
         this.id = id;
         this.firstname = firstname;

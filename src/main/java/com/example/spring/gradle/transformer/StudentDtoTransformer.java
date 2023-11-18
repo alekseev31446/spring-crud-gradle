@@ -4,8 +4,9 @@ import com.example.spring.gradle.dto.StudentDto;
 
 public class StudentDtoTransformer {
     
-    public static StudentDto toStudentDto(String firstname, String middlename, String lastname) {
+    public static StudentDto toStudentDto(Integer id, String firstname, String middlename, String lastname) {
         return StudentDto.builder()
+                .id(id)
                 .firstname(firstname)
                 .middlename(middlename)
                 .lastname(lastname)
@@ -13,9 +14,6 @@ public class StudentDtoTransformer {
     }
 
     public static StudentDto toStudentDto(Integer id, StudentDto studentDto) {
-        return toStudentDto(studentDto.getFirstname(), studentDto.getMiddlename(), studentDto.getLastname())
-                .toBuilder()
-                .id(id)
-                .build();
+        return toStudentDto(id, studentDto.getFirstname(), studentDto.getMiddlename(), studentDto.getLastname());
     }
 }

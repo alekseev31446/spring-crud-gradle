@@ -1,6 +1,7 @@
 version: '3'
 services:
   postgres:
+    container_name: postgres-container
     image: postgres:latest
     ports:
       - "5433:5432"
@@ -10,6 +11,8 @@ services:
       POSTGRES_PASSWORD: admin
 
   spring-gradle:
+    container_name: spring-container
+    image: spring-gradle
     build:
       context: .
       dockerfile: Dockerfile

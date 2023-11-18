@@ -4,24 +4,24 @@
 package com.example.generated.tables;
 
 
-import com.example.generated.Keys;
 import com.example.generated.Public;
 import com.example.generated.tables.records.StudentsRecord;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.function.Function;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
+import org.jooq.Function4;
 import org.jooq.Identity;
 import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Records;
 import org.jooq.Row4;
 import org.jooq.Schema;
+import org.jooq.SelectField;
 import org.jooq.Table;
 import org.jooq.TableField;
 import org.jooq.TableOptions;
-import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
 import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
@@ -56,17 +56,17 @@ public class Students extends TableImpl<StudentsRecord> {
     /**
      * The column <code>public.students.firstname</code>.
      */
-    public final TableField<StudentsRecord, String> FIRSTNAME = createField(DSL.name("firstname"), SQLDataType.VARCHAR.nullable(false), this, "");
+    public final TableField<StudentsRecord, String> FIRSTNAME = createField(DSL.name("firstname"), SQLDataType.VARCHAR, this, "");
 
     /**
      * The column <code>public.students.middlename</code>.
      */
-    public final TableField<StudentsRecord, String> MIDDLENAME = createField(DSL.name("middlename"), SQLDataType.VARCHAR.nullable(false), this, "");
+    public final TableField<StudentsRecord, String> MIDDLENAME = createField(DSL.name("middlename"), SQLDataType.VARCHAR, this, "");
 
     /**
      * The column <code>public.students.lastname</code>.
      */
-    public final TableField<StudentsRecord, String> LASTNAME = createField(DSL.name("lastname"), SQLDataType.VARCHAR.nullable(false), this, "");
+    public final TableField<StudentsRecord, String> LASTNAME = createField(DSL.name("lastname"), SQLDataType.VARCHAR, this, "");
 
     private Students(Name alias, Table<StudentsRecord> aliased) {
         this(alias, aliased, null);
@@ -103,22 +103,12 @@ public class Students extends TableImpl<StudentsRecord> {
 
     @Override
     public Schema getSchema() {
-        return Public.PUBLIC;
+        return aliased() ? null : Public.PUBLIC;
     }
 
     @Override
     public Identity<StudentsRecord, Integer> getIdentity() {
         return (Identity<StudentsRecord, Integer>) super.getIdentity();
-    }
-
-    @Override
-    public UniqueKey<StudentsRecord> getPrimaryKey() {
-        return Keys.STUDENTS_PKEY;
-    }
-
-    @Override
-    public List<UniqueKey<StudentsRecord>> getKeys() {
-        return Arrays.<UniqueKey<StudentsRecord>>asList(Keys.STUDENTS_PKEY);
     }
 
     @Override
@@ -129,6 +119,11 @@ public class Students extends TableImpl<StudentsRecord> {
     @Override
     public Students as(Name alias) {
         return new Students(alias, this);
+    }
+
+    @Override
+    public Students as(Table<?> alias) {
+        return new Students(alias.getQualifiedName(), this);
     }
 
     /**
@@ -147,6 +142,14 @@ public class Students extends TableImpl<StudentsRecord> {
         return new Students(name, null);
     }
 
+    /**
+     * Rename this table
+     */
+    @Override
+    public Students rename(Table<?> name) {
+        return new Students(name.getQualifiedName(), null);
+    }
+
     // -------------------------------------------------------------------------
     // Row4 type methods
     // -------------------------------------------------------------------------
@@ -154,5 +157,20 @@ public class Students extends TableImpl<StudentsRecord> {
     @Override
     public Row4<Integer, String, String, String> fieldsRow() {
         return (Row4) super.fieldsRow();
+    }
+
+    /**
+     * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
+     */
+    public <U> SelectField<U> mapping(Function4<? super Integer, ? super String, ? super String, ? super String, ? extends U> from) {
+        return convertFrom(Records.mapping(from));
+    }
+
+    /**
+     * Convenience mapping calling {@link SelectField#convertFrom(Class,
+     * Function)}.
+     */
+    public <U> SelectField<U> mapping(Class<U> toType, Function4<? super Integer, ? super String, ? super String, ? super String, ? extends U> from) {
+        return convertFrom(toType, Records.mapping(from));
     }
 }

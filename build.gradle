@@ -8,7 +8,7 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '11'
+	sourceCompatibility = '17'
 }
 
 repositories {
@@ -23,9 +23,10 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
 	
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'org.jooq:jooq'
     implementation 'org.jooq:jooq-meta'
-    implementation('org.jooq:jooq-codegen-maven:3.14.16')
+    implementation('org.jooq:jooq-codegen-maven:3.18.7')
     implementation 'org.postgresql:postgresql'
     jooqGenerator 'org.postgresql:postgresql:42.5.1'
     implementation 'org.projectlombok:lombok:1.18.30'
@@ -42,7 +43,7 @@ dependencies {
 import org.jooq.meta.jaxb.Logging
 
 jooq {
-    version = '3.14.16'  
+    version = '3.18.7'  
     edition = nu.studer.gradle.jooq.JooqEdition.OSS 
 
     configurations {
