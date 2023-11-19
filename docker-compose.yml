@@ -13,9 +13,6 @@ services:
   spring-gradle:
     container_name: spring-container
     image: spring-gradle
-    build:
-      context: .
-      dockerfile: Dockerfile
     ports:
       - "27019:27019"
     depends_on:
